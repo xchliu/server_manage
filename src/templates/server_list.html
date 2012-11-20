@@ -1,0 +1,30 @@
+<html>
+<title>server list</title>
+<head>server list</head>
+<hr>
+<p></p>
+<body>
+<table  border="1" bordercolor=""  cellspacing="0"  >
+<tr>
+	<th width=10>id</th>
+	<th width=20>project</th>
+	<th width=20>name</th>
+	<th width=20>ip</th>
+	<th width=10>port</th>	
+</tr>
+{% for server in serverlist %}
+<tr>
+	{% for s in server %}
+		<td >{{ s }}</td>
+	{% endfor %}
+</tr>
+{% endfor %}
+</table>
+<p></p>
+<form action="/add" methos="get">
+	<input type="submit" value="add">
+	<br>
+	<!-- input type="text" value="server" name="server_name"> -->
+</form>
+</body>
+</html>
