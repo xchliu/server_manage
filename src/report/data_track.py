@@ -1,36 +1,45 @@
-import paramiko,threading,os
+import paramiko,threading,os,sys
 from comand import command
+sys.path.append('..')
 from libs.PyMysql import pymysql 
+
 class data_track:
     def __init__(self):
+        self.db=pymysql()
         self.ssh=paramiko.SSHClient()
         self.conn=pymysql()
     def server_list(self):
         servers=self.conn.fetchAll(command.cmd_sql["server_list"])
         return servers
-    def ssh2(self,ip,username,pwd,type):
-        try:
-            if type==1:
-                key=paramiko.RSAKey.from_private_key_file(pwd)
-                self.ssh.load_system_host_keys()
-                self.ssh.connect(ip,22,username,pkey=key,timeout=5)
-            else:
-                self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                self.ssh.connect(ip,22,username,pwd,timeout=5)
-            self.data_get()
-            self.ssh.close()
-        except Exception,ex:
-                print ex
-    def data_get(self):
-        for cmd_name  in command.cmd_sys:
-            stdin,stdout,stderr = self.ssh.exec_command(command.cmd_sys[cmd_name])
+    def ssh2(self,id,ip,username,pwd,type):
+        if type==1:
+            key=paramiko.RSAKey.from_private_key_file(pwd)
+            self.ssh.load_system_host_keys()
+            self.ssh.connect(ip,22,username,pkey=key,timeout=5)
+        else:
+            self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            self.ssh.connect(ip,22,username,pwd,timeout=5)
+        self.data_get(id)
+        self.ssh.close()
+        
+    def data_get(self,id):
+        for cmd_name  in command.cmd_data:
+            cmd_sql=command.cmd_data[cmd_name]
+            cmd_sql=command.cmd_pre+cmd_sql+'\"'
+            stdin,stdout,stderr = self.ssh.exec_command(cmd_sql)
             out=stdout.readlines()
-            for o in out :
-                self.data_save(o)
-    def data_save(self,data):
-        print data
+            err=stderr.readlines()
+            self.data_save(id,out)
+            if err :
+                print err
+    def data_save(self,id,data):
+            item=data[0].strip("\n")
+            value=data[1].strip("\n")
+            sql=command.cmd_sql[item] % (id,value,value)
+            print sql
+            self.db.execute(sql)
 def main():
-    dt=data_track()
+    dt=data_track()    
     threads=[]
     for server in dt.server_list():
         #formate:select id,project,name,ip,port,user,password,key_file from server_basic where role=1 group by project
@@ -49,11 +58,9 @@ def main():
             type=1          #1 keyfile     0 password or only username
         else:
             type=0
-        print "connect to server %s" % str(server)
-        print type
-        th=threading.Thread(target=dt.ssh2(server_ip,server_user,server_pwd,type))
+        print "connect to server %s" % server_project+"_"+server_name
+        th=threading.Thread(target=dt.ssh2(server_id,server_ip,server_user,server_pwd,type))
         th.start()
-        
-    
+            
 if __name__=='__main__':
     main()

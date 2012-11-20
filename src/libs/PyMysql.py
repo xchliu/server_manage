@@ -17,7 +17,7 @@ class pymysql(object):
         try:
             
             self.conn = MySQLdb.connect(host=db_host,user=db_user,passwd=db_password,db=db_name,port=db_port,charset=db_charset)
-            
+            self.conn.autocommit(True)
             self.__db_host = db_host
             self.__db_user = db_user
             self.__db_password = db_password
