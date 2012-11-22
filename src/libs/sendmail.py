@@ -13,11 +13,13 @@ def send_mail(to_list,sub,content):
     msg['Subject'] = sub  
     msg['From'] = me  
     msg['To'] = ";".join(to_list)  
+   # msg['Content-type']=type
     try:  
         s = smtplib.SMTP(mail_host)  
         s.starttls()
         s.login(mail_user,mail_pass)  
         s.sendmail(me, to_list, msg.as_string())  
+        #s.sendmail(me,to_list,content)
         s.close()  
         return True  
     except Exception, e:  

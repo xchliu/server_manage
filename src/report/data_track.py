@@ -63,29 +63,30 @@ class data_track:
 def main():
     dt=data_track()    
     threads=[]
-    
-    for server in dt.server_list():
-        #formate:select id,project,name,ip,port,user,password,key_file from server_basic where role=1 group by project
-        #if the password and the key_file is empty, so connect the server with name@serverip 
-        #if the key_file is the key_file is available,use the key file to connect.
-        server_id=server[0]
-        server_project=server[1]
-        server_name=server[2]
-        server_ip=server[3]
-        server_port=server[4]
-        server_user=server[5]
-        server_pwd=server[6]
-        server_keyfile=server[7]
-        server_socket=server[8]
-        server_db=server[9]
-        if server_pwd=="" and server_keyfile != "":
-            server_pwd=server_keyfile
-            type=1          #1 keyfile     0 password or only username
-        else:
-            type=0
-        print "connect to server %s" % server_project+"_"+server_name
-        th=threading.Thread(target=dt.ssh2(server_project,server_id,server_ip,server_user,server_pwd,server_socket,server_db,type))
-        th.start()
-            
+    try:
+        for server in dt.server_list():
+            #formate:select id,project,name,ip,port,user,password,key_file from server_basic where role=1 group by project
+            #if the password and the key_file is empty, so connect the server with name@serverip 
+            #if the key_file is the key_file is available,use the key file to connect.
+            server_id=server[0]
+            server_project=server[1]
+            server_name=server[2]
+            server_ip=server[3]
+            server_port=server[4]
+            server_user=server[5]
+            server_pwd=server[6]
+            server_keyfile=server[7]
+            server_socket=server[8]
+            server_db=server[9]
+            if server_pwd=="" and server_keyfile != "":
+                server_pwd=server_keyfile
+                type=1          #1 keyfile     0 password or only username
+            else:
+                type=0
+            print "connect to server %s" % server_project+"_"+server_name
+            th=threading.Thread(target=dt.ssh2(server_project,server_id,server_ip,server_user,server_pwd,server_socket,server_db,type))
+            th.start()
+    except Exception,ex:
+        print ex       
 if __name__=='__main__':
     main()

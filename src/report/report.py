@@ -1,9 +1,9 @@
 import datetime,sys,time
 sys.path.append("..")
+import send_mail
 from comand import  command
 from libs.PyMysql import pymysql 
 from comand import command
-from libs.sendmail import send_mail
 from data_track import data_track
 mail_list=["xchliu@bainainfo.com"]
 class report_generate():
