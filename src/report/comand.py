@@ -3,21 +3,46 @@ class command():
         pass
     ## commadn list for getting data
     ## formate in dict:{"data_name":"command_to_execute"}
-    cmd_pre='mysql -umonitor -pmonitor   -e \"'
+    cmd_pre='mysql -umonitor -pmonitor  --socket=%s -e \"'
     cmd_sys={"memory":"free","disk":"df"}
-    cmd_sql={"server_list":"select id,project,name,ip,port,user,password,key_file from server_basic where role=1 and stat=1 group by project",
-             "total_rows":"insert into server_stat(server_id,total_rows,check_time) values (%s,%s,current_date()) on duplicate key update total_rows=%s;"
+    cmd_sql={"server_list":"select id,project,name,ip,port,user,password,key_file,socket,db from server_basic where role=1 and stat=1 group by project,name",
+             "total_rows":"insert into server_stat(project,server_id,total_rows,check_time) values ('%s',%s,%s,current_date()) on duplicate key update total_rows=%s;",
+             "max_rows" :"insert into server_stat(project,server_id,max_row_table,check_time) values ('%s',%s,'%s',current_date()) on duplicate key update max_row_table='%s'",
+             "qps":"insert into server_stat(project,server_id,avg_qps,check_time) values ('%s',%s,%s,current_date()) on duplicate key update avg_qps=%s",
+             "uptime":"insert into server_stat(project,server_id,uptime,check_time) values ('%s',%s,'%s',current_date()) on duplicate key update uptime='%s'",
+             "connections":"insert into server_stat(project,server_id,connections,check_time) values ('%s',%s,%s,current_date()) on duplicate key update connections=%s",
              
              }
-    cmd_data={"total_rows":"SELECT SUM(table_rows) as total_rows FROM information_schema.tables WHERE table_schema NOT IN ('mysql','test','information_schema','performance_schema')",
-               "maxrow_table":"SELECT table_schema,table_name,MAX(table_rows) AS ROWS FROM information_schema.tables WHERE table_schema NOT IN ('mysql','test','information_schema','performance_schema')"
+    cmd_data={"total_rows":"SELECT ifnull(SUM(table_rows),0) as total_rows FROM information_schema.tables WHERE table_schema IN (%s) ",
+               "max_rows":"SELECT concat(table_schema,'.',table_name,':',MAX(table_rows) ) AS max_rows FROM information_schema.tables WHERE table_schema  IN (%s)"
               }
+    cmd_data_sys={"qps":"mysqladmin -umonitor -pmonitor --socket=%s status|cut -f9 -d \":\"",
+                  #"uptime":"mysqladmin -umonitor -pmonitor status|cut -f2 -d\":\"|cut -f1 -d \"T\"",
+                  "uptime":"mysql -umonitor -pmonitor --socket=%s -e \"status\"|grep Uptime|cut -f4",
+                  "connections":"mysqladmin -umonitor -pmonitor --socket=%s status|cut -f3 -d \":\"|cut -f1 -d \"Q\""
+                  }
+    
+    ## sqls for reports
     cmd_report={"num_of_projects":"select count(distinct project) as num_project from server_basic",
                 "num_of_servers":"select count(distinct ip) as num_project from server_basic",
                 "num_of_mysqls":"select count(distinct ip,port) as num_mysql from server_basic"
                 }
-    cmd_project={"num_of_servers":"select count(distinct ip) as num_server from server_basic where project='%s'",
-                 "num_of_mysqls":"select count(distinct ip,port) as num_server from server_basic where project='%s'",
-                 "structure":"select structure from project_basic where name='%s'",
-                 "max_rows_table":"select max_row_table from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s'"
-               }
+    cmd_project={"deploy_structure":"select structure from project_basic where name='%s'",
+                 "num_of_servers":"select count(distinct ip) as num_server from server_basic where project='%s'",
+                 "num_of_mysqls":"select count(distinct ip,port) as num_server from server_basic where project='%s'"
+                 }
+    cmd_project_end={"owner":"select owner from project_basic where name='%s'",
+                     "monitor":"select monitor from project_basic where name='%s'",
+                     "backup":"select backup from project_basic where name='%s'",
+                    # "comment":"select comment from project_basic where name='%s'",
+                     }
+    # list for listing the items in order ,
+    cmd_list=["uptime","avg_qps","connections","total_rows","rows_increment_week","max_rows_table"]
+    cmd_project_item={
+                 "total_rows":"select a.total_rows from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
+                 "max_rows_table":"select max_row_table from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
+                 "avg_qps":"select avg_qps from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
+                 "uptime":"select uptime from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
+                 "connections":"select connections from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
+                 }
+    
