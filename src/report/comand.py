@@ -47,4 +47,5 @@ class command():
                  "uptime":"select uptime from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
                  "connections":"select connections from server_stat a ,server_basic b where a.server_id=b.id and b.project='%s' and a.check_time='%s' ",
                  }
-    
+    # I with that someone will focus here
+    cmd_love=["fang","I love you!"]
