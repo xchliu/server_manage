@@ -1,16 +1,25 @@
 <html>
 <title>server list</title>
-<head>server list</head>
+<head>server basic infomation</head>
 <hr>
+<form action="/add" method="get">
+	<input type="submit" value="manage">
+</form>
+<form action="/report" method="get">
+	<input type="submit" value="reports">
+</form>
 <p></p>
-<body>
+<hr>
+<body>	
 <table  border="1" bordercolor=""  cellspacing="0"  >
 <tr>
 	<th width=10>id</th>
 	<th width=20>project</th>
 	<th width=20>name</th>
 	<th width=20>ip</th>
-	<th width=10>port</th>	
+	<th width=10>port</th>
+	<th width=10>socket</th>
+	<th width=10>db</th>
 </tr>
 {% for server in serverlist %}
 <tr>
@@ -21,10 +30,6 @@
 {% endfor %}
 </table>
 <p></p>
-<form action="/add" methos="get">
-	<input type="submit" value="add">
-	<br>
-	<!-- input type="text" value="server" name="server_name"> -->
-</form>
+
 </body>
 </html>

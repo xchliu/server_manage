@@ -18,7 +18,7 @@ class report_generate():
     def generate_main(self):
         pro_data=self.get_project_data()
         title='Weekly Report for MySQL Databases  NO.%s ' % (self.time)
-        end_title='<b>more info:<b>'
+        end_title='<b>more info:10.2.1.41:8080<b>'
         body='<b>Summarry:</b><br>'
         for item in command.cmd_report:
             cmd_sql=command.cmd_report[item]
@@ -35,8 +35,8 @@ class report_generate():
         body=body.replace('[data]', data)
         body+=end_title
         #print body
-        sendEmail(mail_list,body,title)
-        sql="insert into report_history(rid,content) values(%s,'%s')" % (self.time,body)
+       # sendEmail(mail_list,body,title)
+        sql="insert into report_history(rid,content) values(%s,'%s')" % (self.time,title+body)
         self.conn.execute(sql)
 if __name__ =="__main__":
     report=report_generate()

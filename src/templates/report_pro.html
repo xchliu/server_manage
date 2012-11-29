@@ -1,0 +1,45 @@
+<html>
+<title>report of project</title>
+<head>report by project</head>
+<hr>
+<p></p>
+<body>
+<form action="/report/" method="post">
+	<lable>project:</lable>
+	<select name='project' >
+		{% for p in projectlist %}
+			<option >{{ p }}</option>
+		{% endfor %}
+	</select>
+	<table  border="1" bordercolor=""  cellspacing="0"  >
+	<tr>
+		<th width=10>report_date</th>
+		<th width=10>project</th>
+		<th width=20>structure</th>
+		<th width=20>num_mysql</th>
+		<th width=20>num_server</th>
+		<th width=10>max_row_table</th>	
+		<th width=10>total_rows</th>
+		<th width=10>avg_qps</th>
+		<th width=10>uptime</th>
+		<th width=10>connections</th>
+	</tr>
+	{% for data in datalist %}
+	<tr>	
+		{% for d in data %}
+			<td >{{ d }}</td>
+		{% endfor %}
+	{% endfor %}
+	</tr>
+	
+	<lable>days:</lable>
+	<input type="text" size="2" name="counts" value="10">
+	<br>
+	<input id="action" type="submit"  name="s" value="commit" class="button">
+</form>
+<form action="/report" method="get">
+	<input type='submit' value='back'></form>
+<hr>
+{{ msgs }}
+</body>
+</html>

@@ -12,15 +12,18 @@ class data_track:
         servers=self.conn.fetchAll(command.cmd_sql["server_list"])
         return servers
     def ssh2(self,project,id,ip,username,pwd,socket,db,type):
-        if type==1:
-            key=paramiko.RSAKey.from_private_key_file(pwd)
-            self.ssh.load_system_host_keys()
-            self.ssh.connect(ip,22,username,pkey=key,timeout=10)
-        else:
-            self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            self.ssh.connect(ip,22,username,pwd,timeout=5)
-        self.data_get(project,id,socket,db)
-        self.ssh.close()
+        try:
+            if type==1:
+                key=paramiko.RSAKey.from_private_key_file(pwd)
+                self.ssh.load_system_host_keys()
+                self.ssh.connect(ip,22,username,pkey=key,timeout=10)
+            else:
+                self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                self.ssh.connect(ip,22,username,pwd,timeout=5)
+            self.data_get(project,id,socket,db)
+            self.ssh.close()
+        except Exception,ex:
+            print ex
         
     def data_get(self,project,id,socket,db):
         #cmd_all=dict(command.cmd_data,**command.cmd_data_sys)
