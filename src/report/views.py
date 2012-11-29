@@ -38,6 +38,10 @@ def week_report(date):
     return conn.fetchOne(sql)
 def html_merge(date):
     report="""<html><title>report</title>
+    <form action='/' method=get>
+        <input type="submit" value="back">
+    </form>
+    
     <form action='/report/' method=post>
         <lable>reports by :</lable>
         <select name='type'>
