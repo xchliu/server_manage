@@ -12,7 +12,9 @@ class report_generate():
         self.conn=pymysql()
         self.serverlist=data_track().server_list()
     def get_project_data(self):
-        sql=command.cmd_report_form % self.time
+        #print self.time,type(self.time),command.cmd_report_form["form"]
+        sql=command.cmd_report_form["form"] % self.time
+        print sql
         data=self.conn.fetchAll(sql)
         return data
     def generate_main(self):
@@ -34,9 +36,10 @@ class report_generate():
             alt=not alt
         body=body.replace('[data]', data)
         body+=end_title
-        #print body
-       # sendEmail(mail_list,body,title)
-        sql="insert into report_history(rid,content) values(%s,'%s')" % (self.time,title+body)
+        #print self.time
+        sendEmail(mail_list,body,title)
+        sql="insert into report_history(r_date,content) values('%s','%s')" % (self.time,title+body)
+        
         self.conn.execute(sql)
 if __name__ =="__main__":
     report=report_generate()
