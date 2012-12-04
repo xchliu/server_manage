@@ -1,0 +1,40 @@
+<html>
+<title>project manage</title>
+<head>project manage</head>
+<hr>
+<p></p>
+<body>
+<form action="/add_pro/" method="post">
+	<lable>project:</lable>
+	<select name='project' >
+	    <option>{{ pro_mod }}</option>>
+		{% for p in projectlist %}
+			<option >{{ p }}</option>
+		{% endfor %}
+		<option>new project</option>
+	</select>
+	<input type='submit' name='pro_type' value='ok' class='button'>
+	<br>
+	<lable>project info:<lable>
+	<hr>
+	<lable  width=10>name:</lable>
+	<input type="text"  name="name"  value={{ name }}>
+	<br>
+	<label width=10>structure:</label>
+	<input type="text" name="structure" value={{ structure }}>
+	<br>
+	<label width=10>owner:</label>
+	<input type="text" name="owner" value={{ owner }}>
+	<br>
+	<label width=10>comment:</label>
+	<input type="text" name="comment" value={{ comment }}>
+	<br>	
+	<br>
+	<input id="action" type="submit"  name="commit" value="commit" class="button"></input>
+</form>
+<form action="/add" method="get">
+	<input type='submit' value='back'></form>
+<hr>
+{{ msgs }}
+</body>
+</html>

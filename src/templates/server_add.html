@@ -1,9 +1,12 @@
 <html>
-<title>server add</title>
-<head>server add</head>
-<hr>
+<title>server manage</title>
+<head>server manage</head>
 <p></p>
 <body>
+<form action="/add_pro" method="get">
+	<input id="action" type='submit'  name="type" value="new project"  class="button"></input>
+</form>
+<hr>
 <form action="/add/" method="post">
 	<lable>project:</lable>
 	<select name='project' >
@@ -19,7 +22,7 @@
 	<input type="text" name="server_ip">
 	<br>
 	<label width=10>port:</label>
-	<input type="text" name="server_port">
+	<input type="text" name="server_port" value=3306>
 	<br>
 	<label width=10>&nbsp;&nbsp;db:</label>
 	<input type="text" name="server_db">
@@ -27,9 +30,7 @@
 	<br>
 	<input id="action" type="submit"  name="s" value="commit" class="button"></input>
 </form>
-<form action="/add_pro" method="get">
-	<input id="action" type='submit'  name="p" value='new project' class="button"></input>
-</form>
+
 <form action="/" method="get">
 	<input type='submit' value='back'></form>
 <hr>

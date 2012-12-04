@@ -1,16 +1,27 @@
 <html>
 <title>server list</title>
-<head>server basic infomation</head>
-<hr>
-<form action="/add" method="get">
-	<input type="submit" value="manage">
-</form>
+<head>Server Basic Infomation</head>
 <form action="/report" method="get">
 	<input type="submit" value="reports">
 </form>
-<p></p>
 <hr>
+<form action="/add" method="get"> 
+	<input type="password" name="pwd">
+	<input type="submit" value="manage">
+	<br>
+	<lable>{{ note }}</lable>
+</form>
+<form active="/" method="post">
+<p>Server List:</p>
+	<select name='project' >
+		<option>All</option>
+		{% for p in projectlist %}
+			<option >{{ p }}</option>
+		{% endfor %}
+	</select>
+<input type="submit" name="commit" value="filter">
 <body>	
+<p></p>
 <table  border="1" bordercolor=""  cellspacing="0"  >
 <tr>
 	<th width=10>id</th>
@@ -18,7 +29,6 @@
 	<th width=20>name</th>
 	<th width=20>ip</th>
 	<th width=10>port</th>
-	<th width=10>socket</th>
 	<th width=10>db</th>
 </tr>
 {% for server in serverlist %}

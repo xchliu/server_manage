@@ -1,13 +1,23 @@
 from  server_add  import server_add
+from  project_manage import project_manage
 from django.shortcuts import render_to_response 
 from libs.PyMysql import pymysql 
 conn=pymysql()
 servercfg=server_add()
+projectcfg=project_manage()
 def home(request):
-    serverlist=server_list()
-    return render_to_response('server_list.html',{'serverlist':serverlist})
-def server_list():
-    serverlist=conn.fetchAll("select id,project,name,ip,port,socket,db from server_basic")
+    print request.POST
+    if request.method=="GET":
+        serverlist=server_list(1)
+        return render_to_response('server_list.html',{'serverlist':serverlist,"note":"input password for manage","projectlist":project_list()})
+    else:
+        return render_to_response('server_list.html',{'serverlist':server_list(request.POST["project"]),"note":"input password for manage","projectlist":project_list()})
+def server_list(project):
+    # type :1 all the project  other just specified project
+    if project==1 or project=="All":
+        serverlist=conn.fetchAll("select id,project,name,ip,port,db from server_basic order by project")
+    else:
+        serverlist=serverlist=conn.fetchAll("select id,project,name,ip,port,db from server_basic where project = '%s'" % project) 
     return serverlist
 def project_list():
     projectlist=[]
@@ -17,21 +27,73 @@ def project_list():
     return projectlist
 
 def server_add(request):
+    msg={}
+    msg["projectlist"]=project_list()
     if request.method=="GET":
-        return render_to_response('server_add.html',{'projectlist':project_list()})
+        check=request.GET
+        if check.has_key("pwd"):
+            if request.GET["pwd"]=='123':
+                return render_to_response('server_add.html',msg)
+            else:
+                msg["note"]="incorrect password for manage!"
+                msg["serverlist"]=server_list(1)
+                msg["projectlist"]=project_list()
+                return render_to_response('server_list.html',msg)
+        else:
+            return render_to_response('server_add.html',msg)
+
     else:
         return add_result(request)
 def add_result(request):
     #check if the server is alread exists
     msg={}
     msg["projectlist"]=project_list()
-    if servercfg.main(request.POST):
+    add_stat=servercfg.main(request.POST)
+    # add_stat:2 add server success   0 server already exists  3 add server failed  1 check data failed
+    if add_stat==2:
         msg["msgs"]='add server %s  sucessfull!' % (request.POST["server_name"])
         #print msg
-    else:
+    elif add_stat==0:
         msg["msgs"]='server %s already exists !' % (request.POST["server_name"])
-    print msg
+    elif add_stat==1:
+        msg["msgs"]='check data failed!'
+    else:
+        msg["msgs"]='add server info failed'
     return render_to_response('server_add.html',msg)
+def add_project(request):
+    # return value:0 data check failed
+    #              1 add new project sucessed
+    #              2 add new but project alread exists
+    #              3 mod project sucessed
+    #              4 mod project failed
+    msg={}
+    msg["projectlist"]=project_list()
+    msg["pro_mod"]="new project"
+    if request.method=="GET":
+        return render_to_response('project_add.html',msg)
+    else:
+        post=request.POST
+        if post.has_key("pro_type") and post["project"]<>"new project":
+            proinfo=projectcfg.pro_info(request.POST["project"])
+            msg["name"]=proinfo[0][0]
+            msg["structure"]=proinfo[0][1]
+            msg["owner"]=proinfo[0][2]
+            msg["comment"]=proinfo[0][3]
+            msg["pro_mod"]=post["project"]
+          #  print msg,proinfo
+        elif post.has_key("commit"):
+            add_stat=projectcfg.main(request.POST)
+            if add_stat==0: 
+                msg["msgs"]='data check failed!'
+            elif add_stat==1:
+                msg["msgs"]='add project %s sucessed!' % request.POST["project"]
+            elif add_stat==2:
+                msg["msgs"]='project %s already exists!' % request.POST["project"]    
+            elif add_stat==3:
+                msg["msgs"]='mod project %s sucessed!'  % request.POST["project"]
+            elif add_stat==4:
+                msg["msgs"]='mod project %s failed!' % request.POST["project"]
+        return render_to_response('project_add.html',msg)
 if __name__ == '__main__':
     print server_list()
     #conn.close()

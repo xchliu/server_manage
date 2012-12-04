@@ -20,7 +20,7 @@ class report_generate():
     def generate_main(self):
         pro_data=self.get_project_data()
         title='Weekly Report for MySQL Databases  NO.%s ' % (self.time)
-        end_title='<b>more info:10.2.1.41:8080<b>'
+        end_title='<b>more info:10.2.1.108/report<b>'
         body='<b>Summarry:</b><br>'
         for item in command.cmd_report:
             cmd_sql=command.cmd_report[item]
