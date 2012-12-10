@@ -37,7 +37,7 @@ class command():
                     # "comment":"select comment from project_basic where name='%s'",
                      }
     cmd_report_form={"form":"SELECT project,b.structure,b.num_of_mysql,b.num_of_server,a.max_row_table,SUM(a.total_rows) AS total_rows,CAST(AVG(a.avg_qps) AS UNSIGNED) AS avg_qps,cast(a.uptime as char(3)) as uptime_days,CAST(AVG(a.connections) AS UNSIGNED) AS connections \
-                     FROM `server_stat` a,`project_basic` b WHERE a.project=b.name AND a.check_time='%s' GROUP BY a.project"}
+                     FROM `server_stat` a,`project_basic` b WHERE a.project=b.name AND a.check_time='%s' GROUP BY a.project order by a.server_id"}
     cmd_report_pro="SELECT a.check_time,project,b.structure,b.num_of_mysql,b.num_of_server,a.max_row_table,SUM(a.total_rows) AS total_rows,CAST(AVG(a.avg_qps) AS UNSIGNED) AS avg_qps,a.uptime as uptime_days,CAST(AVG(a.connections) AS UNSIGNED) AS connections \
                      FROM `server_stat` a,`project_basic` b WHERE a.project=b.name  and a.project='%s' group by check_time limit %s"
     
