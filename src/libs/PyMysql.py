@@ -36,9 +36,8 @@ class pymysql(object):
             return True
         except:
             return False
-    def quote(self,queryString):
-        return MySQLdb.escape_string(queryString);
-
+    #def quote(self,queryString):
+        #return MySQLdb.escape_string(queryString);
     def query(self,sql):
         try:
             cursor = self.conn.cursor()

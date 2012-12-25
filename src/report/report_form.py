@@ -1,4 +1,4 @@
-#coding=utf-8
+#coding utf8
 import datetime,sys,time
 sys.path.append('..')
 from sendmail import sendEmail
@@ -26,8 +26,8 @@ class report_generate():
             cmd_sql=command.cmd_report[item]
             data=self.conn.fetchAll(cmd_sql)[0][0]
             body+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%s:&nbsp;&nbsp;%s<br>'% (item,data)
-        body+='<table><tr bgcolor="#E6EED5"><td>项目</td><td>结构</td><td>mysql实例数</td><td>服务器数</td><td>单表最大数据量</td><td>项目总数据量</td>\
-        <td>平均qps</td><td>mysql运行时间</td><td>平均连接数</td><tr>[data]</table>'
+        body+='<table><tr bgcolor="#E6EED5"><td>project</td><td>stucture</td><td>num_of_mysql</td><td>num_of_server</td><td>max_rows_table</td><td>total_rows</td>\
+        <td>avg_qps</td><td>uptime</td><td>connections</td><tr>[data]</table>'
         data=''
         alt =True
         for p in pro_data:
