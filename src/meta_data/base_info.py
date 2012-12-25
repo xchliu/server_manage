@@ -1,4 +1,5 @@
-import time
+import time,sys
+sys.path.append("..")
 from libs import ssh_conn,PyMysql,logs
 from server_list import server_list
 l=logs.Log()
