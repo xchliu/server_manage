@@ -6,16 +6,15 @@ paramiko.util.log_to_file("a.txt",'ERROR')
 class ssh_conn():
     def __init__(self):
         self.ssh=paramiko.SSHClient()
-    def ssh2(self,ip,username,pwd,type):
+    def ssh2(self,ip,username,pwd,key):
         try:
-            #print ip,username,pwd,type
-            if type==1:
-                key=paramiko.RSAKey.from_private_key_file(pwd)
-                self.ssh.load_system_host_keys()
-                self.ssh.connect(ip,22,username,pkey=key,timeout=10)
-            else:
+            if key=='':
                 self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 self.ssh.connect(ip,22,username,pwd,timeout=10)
+            else:
+                key=paramiko.RSAKey.from_private_key_file(key)
+                self.ssh.load_system_host_keys()
+                self.ssh.connect(ip,22,username,pkey=key,timeout=10)   
             return True
         except Exception,ex:
             l.log("CONNECTION",str(ex), 1)
@@ -27,8 +26,8 @@ class ssh_conn():
         out=stdout.readlines()
         err=stderr.readlines()
         return out,err
-    def ssh_connect(self,ip,username,pwd,type,cmd):
-        if self.ssh2(ip, username,pwd,type):
+    def ssh_connect(self,ip,username,pwd,key,cmd):
+        if self.ssh2(ip, username,pwd,key):
             return self.commmad(cmd)
         else:
             return False
@@ -40,7 +39,7 @@ class ssh_sftp():
         try:
             transfer=paramiko.Transport((ip,port))
             transfer.set_hexdump(False)
-            if key==None:
+            if key=='':
                 transfer.connect(username=username,password=pwd)
             else:
                 transfer.connect(username=username,password=pwd,pkey=key)
@@ -70,7 +69,7 @@ class interactive():
     def down_file(self,file):
         self.ftp.ftp(self.ip, self.username,self.pwd,self.port,self.key,file)
     def connect(self,cmd):
-        result=self.ssh.ssh_connect(self.ip, self.username,self.pwd, 2,cmd)
+        result=self.ssh.ssh_connect(self.ip, self.username,self.pwd,self.key,cmd)
         if not result:
             return False
         else:
@@ -85,7 +84,7 @@ class interactive():
             else:
                 return True
     def connect_result(self,cmd):
-        result=self.ssh.ssh_connect(self.ip, self.username,self.pwd, 2,cmd)
+        result=self.ssh.ssh_connect(self.ip, self.username,self.pwd,self.key,cmd)
         if not result:
             return False
         else:

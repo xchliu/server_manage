@@ -44,7 +44,7 @@ class pymysql(object):
             cursor.execute(sql)
             return cursor
         except Exception, ex:
-        
+            return False
             sys.exit("MySQL Query Error:\n"+sql+str(ex)+"\n")
 
 
@@ -52,7 +52,7 @@ class pymysql(object):
         try:
             return self.conn.cursor().execute(sql)
         except Exception,ex:
-            
+            return False
             sys.exit("MySQL Query Error:\n"+str(ex)+"\n")
 
     def fetch(self,cursor):
