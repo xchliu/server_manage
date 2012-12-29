@@ -44,10 +44,13 @@ class pymysql(object):
             cursor.execute(sql)
             return cursor
         except Exception, ex:
-            return False
-            sys.exit("MySQL Query Error:\n"+sql+str(ex)+"\n")
-
-
+            if self.reconnect():
+                cursor = self.conn.cursor()
+                cursor.execute(sql)
+                return cursor
+            else:
+                return False
+                sys.exit("MySQL Query Error:\n"+sql+str(ex)+"\n")
     def execute(self,sql):
         try:
             return self.conn.cursor().execute(sql)
@@ -76,8 +79,7 @@ class pymysql(object):
             sqlArr.append("%s='%s'"%(key,row[key],))
         sql = "insert into "+table +" set "+str.join(",",sqlArr)
         return self.execute(sql)
-
-
+    
     def update(self,table,row,where):
         sqlArr = []
         for key in row.iterkeys():

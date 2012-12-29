@@ -9,7 +9,13 @@ class meta_list():
         if project==1 or project=="All":
             self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 order by project")
         else:
-            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where project = '%s'" % project) 
+            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and project = '%s'" % project) 
+        return self.serverlist
+    def master_list(self,project):
+        if project==1 or project=="All":
+            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and role=1 order by project")
+        else:
+            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and role=1 and project = '%s'" % project) 
         return self.serverlist
     def project_list(self):
         p_list=self.conn.fetchAll('select name from project_basic where stat=1')

@@ -2,11 +2,12 @@ from  server_add  import server_add
 from  project_manage import project_manage
 from django.shortcuts import render_to_response 
 from libs.PyMysql import pymysql 
+from server_list import meta_list
 conn=pymysql()
 servercfg=server_add()
 projectcfg=project_manage()
 def home(request):
-    print request.POST
+    #print request.POST
     if request.method=="GET":
         serverlist=server_list(1)
         return render_to_response('server_list.html',{'serverlist':serverlist,"note":"input password for manage","projectlist":project_list()})
@@ -94,7 +95,7 @@ def add_project(request):
             elif add_stat==4:
                 msg["msgs"]='mod project %s failed!' % request.POST["project"]
         return render_to_response('project_add.html',msg)
+    
 if __name__ == '__main__':
     print server_list()
     #conn.close()
-    

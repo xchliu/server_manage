@@ -1,0 +1,16 @@
+<html>
+<title>server detail</title>
+<style>
+.mysql-span{
+	min-width:300px;
+	display:inline-block;
+}
+</style>
+    <form action='/' method=get>
+        <input type="submit" value="back">
+    </form>
+
+{{ deploy_data }}
+{% autoescape off %}
+	{{ server }}
+{% endautoescape %}
