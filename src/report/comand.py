@@ -1,3 +1,4 @@
+##-*- coding: utf-8 -*-
 class command():
     def __init__(self):
         pass
@@ -23,9 +24,9 @@ class command():
     cmd_data={"total_rows":"SELECT ifnull(SUM(table_rows),0) as total_rows FROM information_schema.tables WHERE table_schema IN (%s) ",
                "max_rows":"SELECT concat(table_schema,'.',table_name,':',MAX(table_rows) ) AS max_rows FROM information_schema.tables WHERE table_schema  IN (%s)"
               }
-    cmd_report={"num_of_projects":"select count(distinct project) as num_project from server_basic",
-                "num_of_servers":"select count(distinct ip) as num_project from server_basic",
-                "num_of_mysqls":"select count(distinct ip,port) as num_mysql from server_basic"
+    cmd_report={"项目总数":"select count(distinct project) as num_project from server_basic",
+                "服务器总数":"select count(distinct ip) as num_project from server_basic",
+                "MySQL总数":"select count(distinct ip,port) as num_mysql from server_basic"
                 }
     cmd_project={"deploy_structure":"select structure from project_basic where name='%s'",
                  "num_of_servers":"select count(distinct ip) as num_server from server_basic where project='%s'",

@@ -1,4 +1,6 @@
-import sys,time
+#coding=utf-8
+import sys
+import codecs
 sys.path.append("..")
 from django.http import HttpResponse 
 from django.shortcuts import render_to_response 
@@ -64,7 +66,7 @@ def html_merge(date):
         report+=week_report(date)
     report+="</body></html>"
     f_dir=sys.path[0]+"/templates/report.html"
-    f=open(f_dir,'w')
+    f=codecs.open(f_dir,'w','utf-8')
     f.write(report)
     f.close()
     return True

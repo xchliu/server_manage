@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from  server_add  import server_add
 from  project_manage import project_manage
 from django.shortcuts import render_to_response 
