@@ -1,18 +1,23 @@
 from  server_add  import server_add
 from  project_manage import project_manage
 from django.shortcuts import render_to_response 
+from django.http import HttpResponseRedirect
 from libs.PyMysql import pymysql 
 from server_list import meta_list
 conn=pymysql()
 servercfg=server_add()
 projectcfg=project_manage()
+slist=meta_list()
 def home(request):
     #print request.POST
     if request.method=="GET":
-        serverlist=server_list(1)
-        return render_to_response('server_list.html',{'serverlist':serverlist,"note":"input password for manage","projectlist":project_list()})
+        #serverlist=server_list(1)
+        serverlist=slist.basic_list(1)
+        return render_to_response('server_list.html',{'serverlist':serverlist,"note":"Password for manage:","projectlist":project_list()})
     else:
-        return render_to_response('server_list.html',{'serverlist':server_list(request.POST["project"]),"note":"input password for manage","projectlist":project_list()})
+        default_project=request.POST["project"]
+        return render_to_response('server_list.html',{'serverlist':slist.basic_list(default_project),"note":"Password for manage:","projectlist":project_list(),\
+                                                      "default_project":default_project})
 def server_list(project):
     # type :1 all the project  other just specified project
     if project==1 or project=="All":
@@ -39,10 +44,10 @@ def server_add(request):
                 msg["note"]="incorrect password for manage!"
                 msg["serverlist"]=server_list(1)
                 msg["projectlist"]=project_list()
-                return render_to_response('server_list.html',msg)
+                return HttpResponseRedirect('/')
+                #return render_to_response('server_list.html',msg)
         else:
             return render_to_response('server_add.html',msg)
-
     else:
         return add_result(request)
 def add_result(request):

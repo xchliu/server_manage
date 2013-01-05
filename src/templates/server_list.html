@@ -3,19 +3,19 @@
 <head>Server Basic Infomation</head>
 <hr>
 <form action="/report" method="get">
-	<input type="submit" value="reports">
+	<input type="submit" value="Reports">
 </form>
 
 <form action="/add" method="get"> 
+	<lable>{{ note }}</lable>
 	<input type="password" name="pwd">
 	<input type="submit" value="manage">
-	<br>
-	<lable>{{ note }}</lable>
 </form>
 <hr>
 <form active="/" method="post">
 <p>Server List:</p>
-	<select name='project' >
+	<select name='project'>
+		<option>{{ default_project }}</option>
 		<option>All</option>
 		{% for p in projectlist %}
 			<option >{{ p }}</option>
@@ -29,16 +29,14 @@
 	<th width=20>project</th>
 	<th width=20>name</th>
 	<th width=20>ip</th>
-	<th width=10>port</th>
-	<th width=10>databases</th>
+	<th width=10>owner</th>
 </tr>
 {% for server in serverlist %}
 <tr>
-	<td><a class='attachment' href="/server_detail?server={{ server.0 }}">{{server.1}}</a></td>
+	<td><a class='attachment' href="/server_detail?project={{ server.1 }}">{{server.1}}</a></td>
 	<td><a class='attachment' href="/server_detail?server={{ server.0 }}">{{server.2}}</a></td>
-	<td>{{ server.3 }}</td>
-	<td>{{ server.4 }}</td>
-	<td>{{ server.5 }}</td>
+	<td><a class='attachment' href="/server_detail?ip={{ server.3 }}">{{ server.3 }}</a></td>
+	<td><a class='attachment' href="/server_detail?owner={{ server.4 }}">{{ server.4 }}</a></td>
 </tr>
 {% endfor %}
 </table>
