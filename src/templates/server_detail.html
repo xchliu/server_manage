@@ -6,11 +6,24 @@
 	display:inline-block;
 }
 </style>
-    <form action='/' method=get>
-        <input type="submit" value="back">
-    </form>
-
-{{ deploy_data }}
+<form action='/' method=get>
+    <input type="submit" value="back">
+</form>
+<lable width=10>project: {{ server.0 }}</lable><br>
+<lable width=10>&nbsp;&nbsp;&nbsp;name: {{ server.1 }}</lable><br>
+<label width=10>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip: {{ server.2 }}</label><br>
+<label width=10>&nbsp;&nbsp;&nbsp;port: {{ server.3 }}</label><br>
+<label width=10>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;db: {{ server.4 }}</label><br>
+<label width=10>&nbsp;&nbsp;socket: {{ server.5 }}</label><br>
+<label width=10>&nbsp;&nbsp;&nbsp;&nbsp;user: {{ server.6 }}</label><br>
+<label width=10>password: {{ server.7 }}</label><br>
+<label width=10>key_file:{{ server.9 }}</label><br>
+<label width=10>root_pwd: {{ server.10 }}</label><br>
+<lable width=10>&nbsp;&nbsp;&nbsp;&nbsp;role:{{ server.8 }}</lable><br>
+<form action='/mod' method=get>
+    <input type="submit" value="edit">
+</form>
+<hr>
 {% autoescape off %}
-	{{ server }}
+	{{ server_base }}
 {% endautoescape %}

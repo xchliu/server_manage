@@ -1,0 +1,23 @@
+<html>
+<title>ip detail</title>
+<form action='/' method=get>
+     <input type="submit" value="back">
+</form>
+<table  border="1" bordercolor=""  cellspacing="0"  >
+<tr>
+	<th width=20>project</th>
+	<th width=20>name</th>
+	<th width=20>ip</th>
+	<th width=20>port</th>
+</tr>
+{% for server in ip %}
+<tr>
+	<td><a class='attachment' href="/project_detail?project={{ server.1 }}">{{server.1}}</a></td>
+	<td><a class='attachment' href="/server_detail?server={{ server.0 }}">{{server.2}}</a></td>
+	<td>{{ server.3 }}</td>
+	<td>{{ server.4 }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<br>

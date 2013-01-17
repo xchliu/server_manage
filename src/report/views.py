@@ -27,7 +27,7 @@ def report_web(request):
                 return his_report(False,0)
             else: 
                 #print request.POST   
-                return his_report(request.POST["project"],request.POST["counts"])
+                return his_report(request.POST["projects"],request.POST["counts"])
             #return render_to_response('report_pro.html',{"datelist":ldate})
 def datelist():
     sql='select distinct check_time from server_stat order by check_time'
@@ -43,7 +43,11 @@ def html_merge(date):
     <form action='/' method=get>
         <input type="submit" value="back">
     </form>
-    
+    <script>
+        function dt(){
+            document.dates.submit();
+        }
+    </script>
     <form action='/report/' method=post>
         <lable>reports by :</lable>
         <select name='type'>
@@ -53,14 +57,13 @@ def html_merge(date):
         </select>
     </form>
     <body>    
-    <form action='/report/' method=post>
+    <form action='/report/' method=post name="dates">
         <lable>report dates:</lable>
-        <select name='date' >
+        <select name='date' onchange="dt()" >
         {% for p in datelist %}
             <option >{{ p }}</option>
         {% endfor %}
         </select>
-        <input id="action" type="submit"  name="commit" value="commit" class="button">
     </form><hr>"""
     if week_report(date):
         report+=week_report(date)

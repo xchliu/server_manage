@@ -4,23 +4,35 @@
 <hr>
 <p></p>
 <body>
-<form action="/report/" method="post">
+<form action="/report" method="get">
+	<input type='submit' value='back'>
+</form>
+<script>
+	function pt(){
+		document.project.submit();
+	}
+</script>
+<form action="/report/" method="post" name="project">
 	<lable>project:</lable>
-	<select name='project' >
+	<select name='projects' onchange="pt()" >
 		{% for p in projectlist %}
 			<option >{{ p }}</option>
 		{% endfor %}
 	</select>
+	<lable>days:</lable>
+	<input type="text" size="2" name="counts" value="10">
+	<input id="action" type="submit"  name="s" value="commit" class="button">
+</form>
 	<table  border="1" bordercolor=""  cellspacing="0"  >
 	<tr>
-		<th width=10>报表日期</th>
-		<th width=10>项目名称</th>
+		<th width=10>日期</th>
+		<th width=10>项目</th>
 		<th width=20>部署结构</th>
-		<th width=20>MySQL实例数</th>
+		<th width=20>MySQL实例数量</th>
 		<th width=20>服务器数量</th>
 		<th width=10>最大数据量表</th>	
 		<th width=10>总数据量</th>
-		<th width=10>平均qps</th>
+		<th width=10>平均QPS</th>
 		<th width=10>MySQL运行时间</th>
 		<th width=10>平均连接数</th>
 	</tr>
@@ -31,15 +43,7 @@
 		{% endfor %}
 	{% endfor %}
 	</tr>
-	
-	<lable>days:</lable>
-	<input type="text" size="2" name="counts" value="10">
-	<br>
-	<input id="action" type="submit"  name="s" value="commit" class="button">
-</form>
-<form action="/report" method="get">
-	<input type='submit' value='back'></form>
-<hr>
+	</table>
 {{ msgs }}
 </body>
 </html>

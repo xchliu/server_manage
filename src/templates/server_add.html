@@ -15,18 +15,41 @@
 		{% endfor %}
 	</select>
 	<br>
-	<lable  width=10>name:</lable>
+	<lable  width=10>*name:</lable>
 	<input type="text"  name="server_name" >
 	<br>
-	<label width=10>&nbsp;&nbsp;ip:</label>
+	<label width=10>&nbsp;&nbsp;*ip:</label>
 	<input type="text" name="server_ip">
 	<br>
-	<label width=10>port:</label>
+	<label width=10>*port:</label>
 	<input type="text" name="server_port" value=3306>
 	<br>
-	<label width=10>&nbsp;&nbsp;db:</label>
+	<label width=10>&nbsp;&nbsp;&nbsp;db:</label>
 	<input type="text" name="server_db">
+	<label>--'dbname','dbname'</label>
+	<br>
+	<label width=10>&nbsp;&nbsp;socket:</label>
+	<input type="text" name="server_socket">
+	<label>--多实例时需指定端口</label>
+	<br>
+	<label width=10>&nbsp;&nbsp;&nbsp;*user:</label>
+	<input type="text" name="server_user" value='xchliu'>
+	<br>
+	<label width=10>password:</label>
+	<input type="text" name="server_pwd">
+	<br>
+	<label width=10>key_file:</label>
+	<input type="text" name="server_key">
+	<lable>--/var/keys/key.pem</lable>
 	<br>	
+	<label width=10>root_pwd:</label>
+	<input type="text" name="server_root">
+	<br>
+	<lable width=10>&nbsp;&nbsp;&nbsp;&nbsp;role:</lable>
+	<select name='role'>
+		<option>master</option>
+		<option>slave</option>
+	</select>
 	<br>
 	<input id="action" type="submit"  name="s" value="commit" class="button"></input>
 </form>

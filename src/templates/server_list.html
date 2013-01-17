@@ -1,27 +1,39 @@
 <html>
 <title>Server Manage</title>
-<head>Server Basic Infomation</head>
-<hr>
-<form action="/report" method="get">
-	<input type="submit" value="Reports">
-</form>
-
-<form action="/add" method="get"> 
-	<lable>{{ note }}</lable>
-	<input type="password" name="pwd">
-	<input type="submit" value="manage">
-</form>
-<hr>
-<form active="/" method="post">
+<style type="text/css">
+	li {
+		float:left;
+		padding:8px 10px; /* 设置内边距 */
+		text-decoration:1; /* 去掉下划线 */
+		}
+	a:hover {
+ 		color: #06F;
+ 		background-color: #899;
+	}
+</style>
+<head>
+<ul>
+  <li><a  href="/">首页</a></li>
+  <li><a  href="/report">报表</a></li>
+  <li><a  href="/add">管理</a></li>
+</ul>
+</head>
+<br><br>
+<script>
+	function ft(){
+		document.filter.submit();
+	}
+</script>
+<form active="/" method="post" name="filter">
 <p>Server List:</p>
-	<select name='project'>
+	<select name='project' onchange="ft()">
 		<option>{{ default_project }}</option>
 		<option>All</option>
 		{% for p in projectlist %}
 			<option >{{ p }}</option>
 		{% endfor %}
 	</select>
-<input type="submit" name="commit" value="filter">
+</form>
 <body>	
 <p></p>
 <table  border="1" bordercolor=""  cellspacing="0"  >
@@ -33,14 +45,13 @@
 </tr>
 {% for server in serverlist %}
 <tr>
-	<td><a class='attachment' href="/server_detail?project={{ server.1 }}">{{server.1}}</a></td>
+	<td><a class='attachment' href="/project_detail?project={{ server.1 }}">{{server.1}}</a></td>
 	<td><a class='attachment' href="/server_detail?server={{ server.0 }}">{{server.2}}</a></td>
-	<td><a class='attachment' href="/server_detail?ip={{ server.3 }}">{{ server.3 }}</a></td>
-	<td><a class='attachment' href="/server_detail?owner={{ server.4 }}">{{ server.4 }}</a></td>
+	<td><a class='attachment' href="/ip_detail?ip={{ server.3 }}">{{ server.3 }}</a></td>
+	<td><a class='attachment' href="/owner_detail?owner={{ server.4 }}">{{ server.4 }}</a></td>
 </tr>
 {% endfor %}
 </table>
 <p></p>
-
 </body>
 </html>

@@ -4,36 +4,42 @@
 <hr>
 <p></p>
 <body>
-<form action="/add_pro/" method="post">
+<form action="/add" method="get">
+	<input type='submit' value='back'>
+</form>
+<script>
+	function pt(){
+		document.projects.submit()
+	}
+</script>
+<form action="/add_pro/" method="post" name='projects'>
 	<lable>project:</lable>
-	<select name='project' >
+	<select name='project' onchange="pt()" >
 	    <option>{{ pro_mod }}</option>>
 		{% for p in projectlist %}
 			<option >{{ p }}</option>
 		{% endfor %}
 		<option>new project</option>
 	</select>
-	<input type='submit' name='pro_type' value='ok' class='button'>
 	<br>
-	<lable>project info:<lable>
-	<hr>
-	<lable  width=10>name:</lable>
+	<lable>base info:<lable>
+	<br>
+	<lable  width=10>name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</lable>
 	<input type="text"  name="name"  value={{ name }}>
 	<br>
 	<label width=10>structure:</label>
 	<input type="text" name="structure" value={{ structure }}>
 	<br>
-	<label width=10>owner:</label>
+	<label width=10>owner:&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<input type="text" name="owner" value={{ owner }}>
 	<br>
-	<label width=10>comment:</label>
+	<label width=10>comment:&nbsp;&nbsp;</label>
 	<input type="text" name="comment" value={{ comment }}>
 	<br>	
 	<br>
 	<input id="action" type="submit"  name="commit" value="commit" class="button"></input>
 </form>
-<form action="/add" method="get">
-	<input type='submit' value='back'></form>
+
 <hr>
 {{ msgs }}
 </body>

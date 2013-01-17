@@ -39,7 +39,7 @@ def server_add(request):
     if request.method=="GET":
         check=request.GET
         if check.has_key("pwd"):
-            if request.GET["pwd"]=='123':
+            if request.GET["pwd"]!='123':
                 return render_to_response('server_add.html',msg)
             else:
                 msg["note"]="incorrect password for manage!"
@@ -80,15 +80,8 @@ def add_project(request):
         return render_to_response('project_add.html',msg)
     else:
         post=request.POST
-        if post.has_key("pro_type") and post["project"]<>"new project":
-            proinfo=projectcfg.pro_info(request.POST["project"])
-            msg["name"]=proinfo[0][0]
-            msg["structure"]=proinfo[0][1]
-            msg["owner"]=proinfo[0][2]
-            msg["comment"]=proinfo[0][3]
-            msg["pro_mod"]=post["project"]
-          #  print msg,proinfo
-        elif post.has_key("commit"):
+        
+        if post.has_key("commit"):
             add_stat=projectcfg.main(request.POST)
             if add_stat==0: 
                 msg["msgs"]='data check failed!'
@@ -100,6 +93,14 @@ def add_project(request):
                 msg["msgs"]='mod project %s sucessed!'  % request.POST["project"]
             elif add_stat==4:
                 msg["msgs"]='mod project %s failed!' % request.POST["project"]
+        elif post["project"]<>"new project":
+            proinfo=projectcfg.pro_info(request.POST["project"])
+            msg["name"]=proinfo[0][0]
+            msg["structure"]=proinfo[0][1]
+            msg["owner"]=proinfo[0][2]
+            msg["comment"]=proinfo[0][3]
+            msg["pro_mod"]=post["project"]
+          #  print msg,proinfo
         return render_to_response('project_add.html',msg)
     
 if __name__ == '__main__':
