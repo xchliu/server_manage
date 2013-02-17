@@ -1,10 +1,10 @@
+import sys
+sys.path.append("..")
 from libs import ssh_conn,sendmail,PyMysql
 from server_list import server_list
 from libs import logs
-import time,sys
 
-sys.path.append("..")
-l=logs.Log()
+mailto_list=["xchliu@bainainfo.com"]
 class data_track():
     def __init__(self,server):
         self.id=server[0]
@@ -26,9 +26,26 @@ def main():
     cmd='python ./dbtools/database-tools/src/repl_monitor.py %s' 
     for server in servers:
         data=data_track(server)
-        _data=data.data_generate(cmd)
-        print _data
+        notice(server,data.data_generate(cmd))
         data.close()
+def notice(server,data):
+    stat=True
+    msg=server[1]+"_"+server[2]+"_"+server[3]+"_"+str(server[4])+"_Replicate error:\n"
+    if len(data[0]) == 0 :
+        return
+    if len(data[0]) == 1 :
+        if int(data[0][0]) == 1 :
+            stat=True
+        else:
+            print server
+            stat=True
+            msg+="Unknown stat !"
+    else:
+        stat=False
+        for d in data[0]:
+            msg+=d
+    if not stat :
+        sendmail.send_mail(mailto_list, "Replicat Monitor", msg)
 if __name__=="__main__":
     main()
 
