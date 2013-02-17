@@ -17,6 +17,12 @@ class meta_list():
         else:
             self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and role=1 and project = '%s'" % project) 
         return self.serverlist
+    def slave_list(self,project):
+        if project==1 or project=="All":
+            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and role=2 order by project")
+        else:
+            self.serverlist=self.conn.fetchAll("select id,project,name,ip,port,db,user,password,key_file from server_basic where stat=1 and role=2 and project = '%s'" % project) 
+        return self.serverlist
     def basic_list(self,project):
         if project==1 or project=="All":
             self.serverlist=self.conn.fetchAll("select a.id,a.project as project ,a.name as name ,a.ip as ip ,b.owner as owner from server_basic a,project_basic b where a.project=b.name and a.stat=1  order by project")

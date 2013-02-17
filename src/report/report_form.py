@@ -21,7 +21,7 @@ class report_generate():
         pro_data=self.get_project_data()
         title='Weekly Report for MySQL Databases  NO.%s ' % (self.time)
         end_title='<b>more info:10.2.1.118/report<b>'
-        body='<b>Summarry:</b><br>'
+        body='<b>Summary:</b><br>'
         for item in command.cmd_report:
             cmd_sql=command.cmd_report[item]
             data=self.conn.fetchAll(cmd_sql)[0][0]
