@@ -30,22 +30,28 @@ def main():
         data.close()
 def notice(server,data):
     stat=True
-    msg=server[1]+"_"+server[2]+"_"+server[3]+"_"+str(server[4])+"_Replicate error:\n"
     if len(data[0]) == 0 :
         return
+    msg=server[1]+"_"+server[2]+"_"+server[3]+"_"+str(server[4])+"_Replicate error:\n"
     if len(data[0]) == 1 :
-        if int(data[0][0]) == 1 :
-            stat=True
+        if len(data[0][0]) < 4:
+            if int(data[0][0]) == 1 :
+                stat=True
+            else:
+                stat=False
+                msg+="Unknown stat !"
         else:
-            print server
-            stat=True
-            msg+="Unknown stat !"
+            stat = False
+            msg+=data[0][0]
     else:
         stat=False
         for d in data[0]:
             msg+=d
     if not stat :
+        print  server[1]+server[2]+msg
         sendmail.send_mail(mailto_list, "Replicat Monitor", msg)
+    else:
+        print server[1]+server[2]+" : ok"
 if __name__=="__main__":
     main()
 
