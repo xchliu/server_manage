@@ -27,11 +27,7 @@ def server_list(project):
         serverlist=serverlist=conn.fetchAll("select id,project,name,ip,port,db from server_basic where project = '%s'" % project) 
     return serverlist
 def project_list():
-    projectlist=[]
-    p_list=conn.fetchAll('select name from project_basic where stat=1')
-    for p in p_list:
-        projectlist.append(p[0])
-    return projectlist
+    return slist.project_list()
 
 def server_add(request):
     msg={}
@@ -80,7 +76,6 @@ def add_project(request):
         return render_to_response('project_add.html',msg)
     else:
         post=request.POST
-        
         if post.has_key("commit"):
             add_stat=projectcfg.main(request.POST)
             if add_stat==0: 
@@ -100,7 +95,7 @@ def add_project(request):
             msg["owner"]=proinfo[0][2]
             msg["comment"]=proinfo[0][3]
             msg["pro_mod"]=post["project"]
-          #  print msg,proinfo
+            #  print msg,proinfo
         return render_to_response('project_add.html',msg)
     
 if __name__ == '__main__':

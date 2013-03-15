@@ -30,7 +30,8 @@ class meta_list():
             self.serverlist=self.conn.fetchAll("select a.id,a.project as project ,a.name as name ,a.ip as ip ,b.owner as owner from server_basic a,project_basic b where a.project=b.name and a.stat=1  and project = '%s'" % project) 
         return self.serverlist
     def project_list(self):
-        p_list=self.conn.fetchAll('select name from project_basic where stat=1')
+        self.projectlist=[]
+        p_list=self.conn.fetchAll('select name from project_basic where stat=1 order by name')
         for p in p_list:
             self.projectlist.append(p[0])
         return self.projectlist
